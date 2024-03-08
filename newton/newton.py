@@ -1,96 +1,89 @@
-import math
+from sympy import *
+import numpy as np
+import Gauss
 
+x0 = np.array([3.0, 1.0])
 
-def f1(x, y):
-    return x**2 + y**2  -13
+x,y = symbols('x y')
+f1 = x**2 + y**2 - 13
+f2 = x*y - 4
+foo = [f1, f2]
+var = ['x', 'y']
 
-def f1_px(x):
-    return 2*x
-
-def f2(x,y):
-    return x*y-4
-
-
+def Newton_inv_matrix(x0, eps):
+    i = 1
+    print("Метод с обратной матрицей:")
+    while true:
+        W = pr(x0)
+        W_inv = np.linalg.inv(W)
+        x1 = x0 - np.dot(W_inv, F(x0))
+        print(f'#{i}: x = {x1[0]} y = {x1[1]}')
+        r = x1 - x0
+        for j in range(len(r)):
+            r[j] = float(r[j])
+        if np.linalg.norm(r) < eps:
+            break
+        x0 = x1  
+        i+=1   
+        
+        
+def Newton_SLAU(x0, eps):
+    print("\nМетод с решением СЛАУ:")
+    i=1
+    while true:
+        f = F(x0)
+        w = pr(x0)
+        X = Gauss.gauss_method(w, f)
+        x1 = x0 - X
+        print(f'#{i}: x = {x1[0]} y = {x1[1]}')
+        if abs(x1[0] - x0[0]) < eps:
+                break
+        x0 = x1
+        i+=1
+        
+    
+    
 def main():
-    nums, l, v_nums, lv = readfiles()
-    nums = tofloat(nums)
-    v_nums = tofloat(v_nums)
+    Newton_inv_matrix(x0, 0.000001)
+    Newton_SLAU(x0, 0.000001)
     
-    if math.sqrt(l) % 1 != 0:
-        print('Не получится построить квадратную матрицу')
-        exit()
-    if int(math.sqrt(l)) != lv:
-        print('Количесвто свободных ченов не совпадает с количеством переменных')
-        exit()
-
+    
+def F(x0 = None):
+    f = [0] * len(foo)
+    if x0.all() == None:
+        for i in range(len(f)):
+            f[i] = foo[i]
     else:
-        pass
-
-
-
-def tofloat(list):
-    for i in range(len(list)):
-        list[i] = float(list[i])
-    return list
-
-def readfiles():
-    with open('D:/ВычМат/MPI/matrix_mpi.txt','r') as f:
-        nums = f.readlines()
-        l = len(nums)
-        if l == 1:
-            nums = nums[0].split(' ')
-            l = len(nums)
+        for i in range(len(x0)):
+            f[i] = foo[i].subs([(x, x0[0]), (y, x0[1])])
+    return f
     
-    with open('D:/ВычМат/MPI/vector_mpi.txt','r') as fv:
-        vetor_nums = fv.readlines()
-        lv = len(vetor_nums)
-        if lv == 1:
-            vetor_nums = vetor_nums[0].split(' ')
-            lv = len(vetor_nums)
+def pr(f = None):
+    der = [0] * len(foo)
+    for i in range(len(foo)):
+        der[i] = [0]*len(var)
+    for i in range(len(foo)):
+        for j in range(len(var)):
+            der[i][j] = foo[i].diff(var[j])
+            
+    if f.all() == None:
+        return der
     
-    return nums, l, vetor_nums, lv
-
-def init(n, nums):
-    matrix = [0]*n
-    for i in range(n):
-        matrix[i] = [0]*n
-    k=0
-    for i in range(0,n):
-        for j in range(0,n):
-            matrix[i][j] = nums[k]
-            k+=1
-    return matrix
-
-def print_matrix(matrix=None, v_nums=None):
-    if matrix != None and v_nums != None:
-        n = len(matrix)
-        print('')
-        for i in range(0,n):
-            for j in range(0,n):
-                print( f"{matrix[i][j]:>7.3f}", end=' ')
-            print(f'| {v_nums[i]:>7.3f}', end='\n')
+    else:
+        for i in range(len(foo)):
+            for j in range(len(var)):
+                der[i][j] = int(der[i][j].subs([(x, f[0]), (y, f[1])]))
+        return der
+        
     
-    if matrix != None and v_nums == None:
-        n = len(matrix)
-        print('')
-        for i in range(0,n):
-            for j in range(0,n):
-                print( f"{matrix[i][j]:>7.3f}", end=' ')
-            print('')
 
-def print_vector(vector):
-    n = len(vector)
+def print_m(f):
+    for i in range(len(f)):
+        print(f[i])
     print('')
-    for i in range(n):
-        if vector[i] < 0.0000001:
-            print(f'{abs(vector[i]):>7.3f}', end='\n')
-        else:
-            print(f'{vector[i]:>7.3f}', end='\n')
 
-
-
-
-
+def Sqrt(x):
+  return np.sqrt(np.double(x))
 
 if __name__ == '__main__':
     main()
