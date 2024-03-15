@@ -5,24 +5,10 @@ data = [2.56]
 def main():
     x, y = init()
 
-    #for_graph(x,y)
+    for_graph(x,y, 4)
     print(Lagrange(x, y, 2.56))
     
     print(Eytken(x, y, 5, 2.56))
-    
-    
-def for_graph(x,y):
-    for i in data:
-        y.append(Lagrange(x,y,i))
-        x.append(i)
-    
-    for j in range(len(x)):
-        if x[j] in data:
-            plt.scatter(x[j], y[j], c = "red", s = 15)
-        else:
-            plt.scatter(x[j], y[j], c = "blue", s = 15)
-    plt.show()
-    
     
 def Lagrange(x, y, point):
     n = len(x)
@@ -61,6 +47,38 @@ def init():
             y[i] = float(raw[1])
     return x, y
             
+            
+def for_graph(x,y, n = None):
+    if n == None:
+        for i in data:
+            y.append(Lagrange(x,y,i))
+            x.append(i)
+        
+        for j in range(len(x)):
+            if x[j] in data:
+                plt.scatter(x[j], y[j], c = "red", s = 15)
+            else:
+                plt.scatter(x[j], y[j], c = "blue", s = 15)
+        plt.show()
+        
+        
+    else:
+        for i in data:
+            y.append(Eytken(x,y,n,i))
+            x.append(i)
+            
+        y_r = y[0:n]
+        x_r = x[0:n]
+        x_r.append(x[-1])
+        y_r.append(y[-1])
+        
+        for j in range(n+1):
+            if x_r[j] in data:
+                plt.scatter(x_r[j], y_r[j], c = "red", s = 15)
+            else:
+                plt.scatter(x_r[j], y_r[j], c = "blue", s = 15)
+        plt.show()
+                
 
 if __name__ == "__main__":
     main()
