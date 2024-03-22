@@ -2,18 +2,16 @@ import matplotlib.pyplot as plt
 import math
 
 data = [2.56]
-#ax = plt.gca()
-#ax.spines['bottom'].set_position('center')
-#ax.spines['top'].set_visible(False)
-#ax.spines['right'].set_visible(False)
-
 
 def main():
     x, y = init()
-    print(Lagrange(x, y, data[0]))
-    print(Eytken(x, y, len(x)-1, data[0]))
-    print(newton_1(data[0], x,y))
-    print(newton_2(data[0], x, y))
+    
+    for num in data:
+        print(f"Лагранж : {Lagrange(x, y, num)}")
+        print(f"Эйткен : {Eytken(x, y, len(x)-1, num)}")
+        print(f"Первая формула Ньютона : {newton_1(num, x,y)}")
+        print(f"Вторая формула Ньютона : {newton_2(num, x, y)}\n")
+        
     graph(x,y)
 
 def print_tabl(x,y,delta):
@@ -123,32 +121,43 @@ def graph(x,y):
         x_r[i] = (i+1)/10
         y_r[i] = math.sin((i+1)/10)
     
-    for i in range(1,len(x)):
-        if x[i] > data[0]:
-            y_l = y_l[0:i] + [Lagrange(x_l, y_l, data[0])] + y_l[i:]
-            x_l = x_l[0:i] + [data[0]] + x_l[i:]
-            
-            y_e = y_e[0:i] + [Eytken(x_e, y_e, len(x_e)-1, data[0])] + y_e[i:]
-            x_e = x_e[0:i] + [data[0]] + x_e[i:]
-            
-            y_n1 = y_n1[0:i] + [newton_2(data[0], x_l, y_l)] + y_n1[i:]
-            x_n1 = x_n1[0:i] + [data[0]] + x_n1[i:]
-            
-            y_n2 = y_n2[0:i] + [newton_1(data[0], x_n2, y_n2)] + y_n2[i:]
-            x_n2 = x_n2[0:i] + [data[0]] + x_n2[i:]
-            break
+    for k in range(len(data)):
+        for i in range(1,len(x)):
+            if x[i] > data[k]:
+                y_l = y_l[0:i] + [Lagrange(x_l, y_l, data[k])] + y_l[i:]
+                x_l = x_l[0:i] + [data[k]] + x_l[i:]
                 
+                y_e = y_e[0:i] + [Eytken(x_e, y_e, len(x_e)-1, data[k])] + y_e[i:]
+                x_e = x_e[0:i] + [data[k]] + x_e[i:]
+                
+                y_n1 = y_n1[0:i] + [newton_1(data[k], x_l, y_l)] + y_n1[i:]
+                x_n1 = x_n1[0:i] + [data[k]] + x_n1[i:]
+                
+                y_n2 = y_n2[0:i] + [newton_2(data[k], x_n2, y_n2)] + y_n2[i:]
+                x_n2 = x_n2[0:i] + [data[k]] + x_n2[i:]
+                break
+                
+    figure, axis = plt.subplots(2, 2) 
+    figure.set_size_inches(10,10)
+    axis[0][0].plot(x_l,y_l,"b", linewidth=2.0)
+    axis[0][0].plot(x_l,y_l,"bo", linewidth=2.0)
+    axis[0][0].plot(x_r,y_r,"r--", linewidth=2.0)
+    axis[0, 0].set_title("Лагранж") 
     
-    plt.plot(x_l,y_l,"b", linewidth=2.0, label = "Lagrange")
-    plt.plot(x_l,y_l,"bo", linewidth=2.0)
-    # plt.plot(x_e,y_e,"y", linewidth=2.0, label = "Eytken")
-    # plt.plot(x_e,y_e,"yo", linewidth=2.0)
-    # plt.plot(x_n1,y_n1,"g", linewidth=2.0, label = "Newton1")
-    # plt.plot(x_n1,y_n1,"go", linewidth=2.0)
-    # plt.plot(x_n2,y_n2, "c", linewidth=2.0, label = "Newton2")
-    # plt.plot(x_n2,y_n2, "co", linewidth=2.0)
-    plt.plot(x_r,y_r,"r--", linewidth=2.0, label = "Function")
-    plt.legend()
+    axis[0][1].plot(x_e,y_e,"y", linewidth=2.0)
+    axis[0][1].plot(x_e,y_e,"yo", linewidth=2.0)
+    axis[0][1].plot(x_r,y_r,"r--", linewidth=2.0)
+    axis[0, 1].set_title("Эйткен") 
+    
+    axis[1][0].plot(x_n1,y_n1,"g", linewidth=2.0)
+    axis[1][0].plot(x_n1,y_n1,"go", linewidth=2.0)
+    axis[1][0].plot(x_r,y_r,"r--", linewidth=2.0)
+    axis[1, 0].set_title("Ньютон 1") 
+    
+    axis[1][1].plot(x_n2,y_n2, "c", linewidth=2.0)
+    axis[1][1].plot(x_n2,y_n2, "co", linewidth=2.0)
+    axis[1][1].plot(x_r,y_r,"r--", linewidth=2.0)
+    axis[1, 1].set_title("Ньютон 2") 
     plt.show()
 
     
