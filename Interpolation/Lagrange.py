@@ -14,7 +14,7 @@ def main():
     print(Eytken(x, y, len(x)-1, data[0]))
     print(newton_1(data[0], x,y))
     print(newton_2(data[0], x, y))
-    #graph(x,y)
+    graph(x,y)
 
 def print_tabl(x,y,delta):
     print('{:>10}'.format('x'), end=' ')
@@ -139,10 +139,14 @@ def graph(x,y):
             break
                 
     
-    plt.plot(x_l,y_l,"bo", linewidth=2.0, label = "Lagrange")
-    plt.plot(x_e,y_e,"yo", linewidth=2.0, label = "Eytken")
-    plt.plot(x_n1,y_n1,"go", linewidth=2.0, label = "Newton1")
-    plt.plot(x_n2,y_n2, "co", linewidth=2.0, label = "Newton2")
+    plt.plot(x_l,y_l,"b", linewidth=2.0, label = "Lagrange")
+    plt.plot(x_l,y_l,"bo", linewidth=2.0)
+    # plt.plot(x_e,y_e,"y", linewidth=2.0, label = "Eytken")
+    # plt.plot(x_e,y_e,"yo", linewidth=2.0)
+    # plt.plot(x_n1,y_n1,"g", linewidth=2.0, label = "Newton1")
+    # plt.plot(x_n1,y_n1,"go", linewidth=2.0)
+    # plt.plot(x_n2,y_n2, "c", linewidth=2.0, label = "Newton2")
+    # plt.plot(x_n2,y_n2, "co", linewidth=2.0)
     plt.plot(x_r,y_r,"r--", linewidth=2.0, label = "Function")
     plt.legend()
     plt.show()
