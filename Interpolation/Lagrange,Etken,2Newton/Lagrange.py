@@ -7,12 +7,13 @@ def main():
     x, y = init()
     
     for num in data:
-        print(f"Лагранж : {Lagrange(x, y, num)}")
-        print(f"Эйткен : {Eytken(x, y, len(x)-1, num)}")
-        print(f"Первая формула Ньютона : {newton_1(num, x,y)}")
-        print(f"Вторая формула Ньютона : {newton_2(num, x, y)}\n")
+        print(f"Лагранж для {num} : {Lagrange(x, y, num)}")
+        print(f"Эйткен для {num} : {Eytken(x, y, len(x)-1, num)}")
+        print(f"1 формула Ньютона для {num} : {newton_1(num, x,y)}")
+        print(f"2 формула Ньютона для {num} : {newton_2(num, x, y)}\n")
         
     graph(x,y)
+
 
 def print_tabl(x,y,delta):
     print('{:>10}'.format('x'), end=' ')
@@ -30,13 +31,12 @@ def print_tabl(x,y,delta):
         print(' ')
     print('\n')
     
+    
 def divided_differences(x, y, k):
     n = len(x)
     F = [[None] * n for _ in range(n)]
-
     for i in range(n):
         F[i][0] = y[i]
-
     for j in range(1, n):
         for i in range(n - j):
             F[i][j] = (F[i + 1][j - 1] - F[i][j - 1]) / (x[i + j] - x[i])
@@ -63,6 +63,7 @@ def newton_1(point, x, y):
         res += q
     return round(res, 5)
 
+
 def newton_2(point, x, y):
     F = divided_differences(x, y, 2)
     F.reverse()
@@ -74,6 +75,7 @@ def newton_2(point, x, y):
             q *= ((point - x[n-1]) + j)
         res += q
     return round(res, 5)
+    
     
 def Lagrange(x, y, point):
     n = len(x)
@@ -100,7 +102,7 @@ def Eytken(x, y, n, point):
 
     
 def init():
-    with open("F:/4 семак/вычмат/VichMat/------/Interpolation/nums.txt", "r") as f:
+    with open("F:/4 семак/вычмат/VichMat/------/Interpolation/Lagrange,Etken,2Newton/nums.txt", "r") as f:
         nums = f.readlines()
         n = len(nums)
         x = [0] * n
