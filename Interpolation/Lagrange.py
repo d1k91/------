@@ -12,43 +12,27 @@ def main():
     x, y = init()
     print(Lagrange(x, y, data[0]))
     print(Eytken(x, y, len(x)-1, data[0]))
-    print(newton_interpolation(data[0], x,y))
-    print(newton(data[0], x, y))
-    graph(x,y)
+    print(newton_1(data[0], x,y))
+    print(newton_2(data[0], x, y))
+    #graph(x,y)
 
-def print_tabl(delta):
+def print_tabl(x,y,delta):
+    print('{:>10}'.format('x'), end=' ')
+    print('{:>10}'.format('y'), end=' ')
+    for k in range(len(delta)):
+        print("{:>10}".format('Δ^'+str(k+1)+'y'), end=' ')
+    print('\n'+'-'*10*(len(delta)+3))    
     for i in range(len(delta)):
+        print(f"{x[i]:>10.3}", end=' ')
+        print(f"{y[i]:>10.3}", end=' ')
         for j in range(len(delta[i])):
             if delta[i][j] == None:
                 delta[i][j] = 0.0
-            print(f"{delta[i][j]:>7.3}", end=' ')
+            print(f"{delta[i][j]:>10.3}", end=' ')
         print(' ')
+    print('\n')
     
-def divided_differences(x_values, y_values):
-    n = len(x_values)
-    F = [[None] * n for _ in range(n)]
-
-    for i in range(n):
-        F[i][0] = y_values[i]
-
-    for j in range(1, n):
-        for i in range(n - j):
-            F[i][j] = (F[i + 1][j - 1] - F[i][j - 1]) / (x_values[i + j] - x_values[i])
-    #print_tabl(F)
-    return F[0]
-
-def newton_interpolation(point, x, y):
-    coeffs = divided_differences(x, y)
-    n = len(x)
-    interpolation = coeffs[0]
-    for i in range(1, n):
-        term = coeffs[i]
-        for j in range(i):
-            term *= (point - x[j])
-        interpolation += term
-    return round(interpolation, 5)
-
-def newton(point, x, y):
+def divided_differences(x, y, k):
     n = len(x)
     F = [[None] * n for _ in range(n)]
 
@@ -58,15 +42,40 @@ def newton(point, x, y):
     for j in range(1, n):
         for i in range(n - j):
             F[i][j] = (F[i + 1][j - 1] - F[i][j - 1]) / (x[i + j] - x[i])
-    #print_tabl(F)
-    interpolation = F[0][0]
-    for j in range(1, n):
-        term = F[0][j]
-        for i in range(j):
-            term *= (point - x[i])
-        interpolation += term
+    #print_tabl(x, y, F)
+    if k == 1:
+        return F[0]
+    if k == 2:
+        F_2 = [0] * n
+        for i in range(n):
+            for j in range(n):
+                if i + j == n-1:
+                    F_2[i] = F[i][j]
+        return F_2
+        
 
-    return round(interpolation, 5)
+def newton_1(point, x, y):
+    F = divided_differences(x, y, 1)
+    n = len(x)
+    res = F[0]
+    for i in range(1, n):
+        q = F[i]
+        for j in range(i):
+            q *= ((point - x[0]) - j)
+        res += q
+    return round(res, 5)
+
+def newton_2(point, x, y):
+    F = divided_differences(x, y, 2)
+    F.reverse()
+    n = len(x)
+    res = F[0]
+    for i in range(1, n):
+        q = F[i]
+        for j in range(i):
+            q *= ((point - x[n-1]) + j)
+        res += q
+    return round(res, 5)
     
 def Lagrange(x, y, point):
     n = len(x)
@@ -122,18 +131,18 @@ def graph(x,y):
             y_e = y_e[0:i] + [Eytken(x_e, y_e, len(x_e)-1, data[0])] + y_e[i:]
             x_e = x_e[0:i] + [data[0]] + x_e[i:]
             
-            y_n1 = y_n1[0:i] + [newton(data[0], x_l, y_l)] + y_n1[i:]
+            y_n1 = y_n1[0:i] + [newton_2(data[0], x_l, y_l)] + y_n1[i:]
             x_n1 = x_n1[0:i] + [data[0]] + x_n1[i:]
             
-            y_n2 = y_n2[0:i] + [newton_interpolation(data[0], x_n2, y_n2)] + y_n2[i:]
+            y_n2 = y_n2[0:i] + [newton_1(data[0], x_n2, y_n2)] + y_n2[i:]
             x_n2 = x_n2[0:i] + [data[0]] + x_n2[i:]
             break
                 
     
-    #plt.plot(x_l,y_l,"bo", linewidth=2.0, label = "Lagrange")
-    #plt.plot(x_e,y_e,"yo", linewidth=2.0, label = "Eytken")
-    #plt.plot(x_n1,y_n1,"go", linewidth=2.0, label = "Newton1")
-    #plt.plot(x_n2,y_n2, "co", linewidth=2.0, label = "Newton2")
+    plt.plot(x_l,y_l,"bo", linewidth=2.0, label = "Lagrange")
+    plt.plot(x_e,y_e,"yo", linewidth=2.0, label = "Eytken")
+    plt.plot(x_n1,y_n1,"go", linewidth=2.0, label = "Newton1")
+    plt.plot(x_n2,y_n2, "co", linewidth=2.0, label = "Newton2")
     plt.plot(x_r,y_r,"r--", linewidth=2.0, label = "Function")
     plt.legend()
     plt.show()
