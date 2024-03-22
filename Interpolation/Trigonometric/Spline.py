@@ -21,7 +21,7 @@ def graph(x,y,m):
     for i in range(10, int(x[-1])*10):
         x_r[i] = i/10
         y_r[i] = find_s(x, y, m, i/10)
-        print(x_r[i], y_r[i])
+        #print(x_r[i], y_r[i])
     plt.plot(x_r, y_r)
     plt.show()
     
@@ -42,13 +42,13 @@ def find_s(x,y,M, point):
     
     
 def find_C(x,y):
-    C = [0] * 3
-    d = [0] * 3
-    for i in range(3):
-        C[i] = [0] * 4
+    C = [0] * (len(x)-1)
+    d = [0] * (len(x)-1)
+    for i in range(len(x)-1):
+        C[i] = [0] * (len(x))
     
-    for i in range(3):
-        for j in range(4):
+    for i in range(1, len(x)-1):
+        for j in range(len(x)):
             if i == j:
                 h1 = x[i] - x[i-1]
                 h2 = x[i+1] - x[i]
