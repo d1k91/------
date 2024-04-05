@@ -1,18 +1,19 @@
 import matplotlib.pyplot as plt
 import math
 
-data = [2.56]
+data = [10]
 
 def main():
     x, y = init()
     
     for num in data:
         print(f"Лагранж для {num} : {Lagrange(x, y, num)}")
-        print(f"Эйткен для {num} : {Eytken(x, y, len(x)-1, num)}")
-        print(f"1 формула Ньютона для {num} : {newton_1(num, x,y)}")
-        print(f"2 формула Ньютона для {num} : {newton_2(num, x, y)}\n")
+        #print(f"Эйткен для {num} : {Eytken(x, y, len(x)-1, num)}")
+        #print(f"1 формула Ньютона для {num} : {newton_1(num, x,y)}")
+        #print(f"2 формула Ньютона для {num} : {newton_2(num, x, y)}\n")
+        print(f"Обратная интерполяция для {num}: {Lagrange(y,x,num)}\n")
         
-    graph(x,y)
+    #graph(x,y)
 
 
 def print_tabl(x,y,delta):
