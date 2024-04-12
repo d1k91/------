@@ -1,19 +1,58 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-point = 8
-x0 = 2
-h = 4
+point = 1.5
+x0 = 0
+h = 1
 n = 4
+coef = 10
 
 def main():
     
     x,y = init(x0, h, n)
+    print(f"{x}\n{y}")
     print(find_y(point, x0, n, h, y))
-    #graph(x,y)
+    graph(x,y)
+
+def graph(x, y):
+    s = [0] * int((n-1) * coef)
+    i = 0
+    re = [0] * int((n-1) * coef)
+    im = [0] * int((n-1) * coef)
+    y_orig = [0] * int((n-1) * coef)
+    for i in range(len(s)):
+        s[i] = round((x[0] + 1 * (h/2) + h*i) / coef, 4)
+        xx = find_y(s[i], x0, n, h, y)
+        re[i] = xx.real
+        im[i] = xx.imag
+        y_orig[i] = func(s[i])
+        print(s[i], y_orig[i])
+        
+    
+
+    figure, axis = plt.subplots(2,2)
+    
+    
+    figure.set_size_inches(9,7)
+    
+    axis[0,0].plot(re,im)
+    axis[0,0].set_title('Re/Im')
+    
+    axis[0,1].plot(s,re)
+    axis[0,1].set_title('x/Re')
+    
+    axis[1,0].plot(s,im)
+    axis[1,0].set_title('x/Im')
+    
+    axis[1,1].plot(s,y_orig)
+    axis[1,1].set_title('Original')
+    
+    plt.show()
+        
+        
 
 def func(x):
-    return round(x**2)
+    return round(x**2, 4)
     
 def init(x0, h, n):
     x = [0] * n
@@ -30,36 +69,17 @@ def A(j, y, n):
         a += y[k] * (round(np.cos(-2 * np.pi * (k*j)/n), 4) + i * round(np.sin(-2 * np.pi * (k*j)/n), 4))
         #print(y[k], round(np.cos(-2 * np.pi * (k*j)/n), 4) + i * round(np.sin(-2 * np.pi * (k*j)/n), 4))
         
-    if j == 0:
-        return a
-    else:
-        return a * 1/n
+    return a
     
 def find_y(x, x0, n, h, y):
     yx = 0
     i = 1j
     for j in range(int(-n/2)+1, int(n/2)+1):
-        yx += A(j,y,n) * (round(np.cos(2*np.pi*j*((x-x0)/(n*h))), 4) + i * round(np.sin(2*np.pi*j*((x-x0)/(n*h))), 4))
+        #yx += A(j,y,n) * (round(np.cos(2*np.pi*j*((x-x0)/(n*h))), 4) + i * round(np.sin(2*np.pi*j*((x-x0)/(n*h))), 4))
+        yx += A(j,y,n) * np.exp(2 * np.pi * i * j * ((x-x0)/(n*h)))
         #print(A(j,y,n) * (round(np.cos(2*np.pi*j*((x-x0)/(n*h))), 4) + i * round(np.sin(2*np.pi*j*((x-x0)/(n*h))), 4)))
+    yx *= 1/n
     return np.round(yx, 4)
-
-
-def graph(x, y):
-    xr = [0]*((int(x[-1])-int(x[0]))*10)
-    yr = [0]*((int(x[-1])-int(x[0]))*10)
-    for i in range((int(x[-1])-int(x[0]))*10):
-        xr[i] = x[0] + i * 0.1
-        yr[i] = func(xr[i])
-    
-    for i in range(len(x)):
-        if x[i] > point:
-            y = y[0:i] + [find_y(point,x0,n,h,y)] + y[i:]
-            x = x[0:i] + [point] + x[i:]
-    
-    plt.plot(xr,yr, "r--")
-    plt.plot(x,y, "b")
-    plt.show()
-    
     
 
 if __name__ == "__main__":
