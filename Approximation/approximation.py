@@ -7,6 +7,7 @@ i_start = 0
 i_end = 5
 h = 0.2
 n = i_end - i_start + 1
+alph = ['a', 'b', 'c', 'd', 'e']
 
 def g0(x):
     return 1
@@ -25,9 +26,10 @@ def main():
     x = init()
     c = C(funcs, x)
     D = d(funcs, x)
-    print(c, D)
     a = Gauss.gauss_method(c, D)
-    print(a)
+    print('Коэффициенты:')
+    for i in range(len(a)):
+        print(f'{alph[i]} = {a[i]}') 
     graph(x, funcs, a)
     
 def graph(x, funcs, a):
@@ -41,7 +43,6 @@ def graph(x, funcs, a):
         xx[i-1] = x0 + (i-1)*h
         gg[i-1] = g(funcs, a, xx[i-1])
     
-    print(xx, gg)
     plt.scatter(x,y, fc = 'none', ec='r')
     plt.plot(xx,gg,'b--')
     plt.show()
@@ -76,22 +77,6 @@ def init():
     for i in range(n):
         x[i] = x0 + h * i
     return x
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
