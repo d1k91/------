@@ -19,7 +19,7 @@ def test(f_orig, y0):
     x = x0
     count = 0
     for foo in mas:
-        x, y = foo(x, y, n, h, f)
+        x, y = foo(x, y, n, h, f_orig)
         print(f'y = {y}')
         inp = input('Сходится? 1 - да, 0 - нет\n')
         if inp == '0':
