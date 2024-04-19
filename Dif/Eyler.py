@@ -10,7 +10,7 @@ def f(x0, y0, n, h, func):
         y.append(y_new)
         # print(f'{it}. {x[-1]} {y[-1]}')
         it += 1
-    return y[-1]
+    return x[-1], y[-1]
       
 def func(x, y):
     return np.array([y[1], x * y[1] + y[0]])

@@ -1,7 +1,7 @@
 import Eyler as ey
-import Runge_kut2_proizv as rk2pr
-import Runge_kut2_vrem as rk2v
-import Runge_kut4 as rk4
+import RK2pr as rk2pr
+import RK2vr as rk2v
+import RK4 as rk4
 import numpy as np
 
 
@@ -9,23 +9,18 @@ x0 = 1  # начальное значение x
 y0 = np.array([2, -1])  # начальные значения y1 и y2
 h = 0.2  # шаг интегрирования
 n = 1  # количество шагов
-mas = [ey.foo, rk2pr.foo, rk2v.foo, rk4.foo]
+mas = [ey.f, rk2pr.f, rk2v.f, rk4.f]
 
 def main():
-    # for foo in mas:
-    #     y = foo(f, x0, y0, h, 3)
-    #     print(f'{y}\n')
-    test(f, mas)
+    test(f, y0)
 
-
-
-def test(f_orig, mas):
+def test(f_orig, y0):
     y = y0
-    i = 0
+    x = x0
+    count = 0
     for foo in mas:
-        y = foo(f_orig, x0 + h*i, y, h, n)
-        i+=1
-        print(f'y = {y}.')
+        x, y = foo(x, y, n, h, f)
+        print(f'y = {y}')
         inp = input('Сходится? 1 - да, 0 - нет\n')
         if inp == '0':
             print('Введите свое значение: ')
@@ -33,8 +28,8 @@ def test(f_orig, mas):
                 y[i] = float(input(f'y[{i}] = '))
             print(y)
         else:
-            pass
-
+            count += 1
+    print(f'Правильно решено {count} шагов')
 
 def f(x, y):
     return np.array([y[1], x * y[1] + y[0]])

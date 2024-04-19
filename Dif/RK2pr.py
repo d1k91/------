@@ -12,7 +12,7 @@ def f(x0, y0, n, h, func):
         
         # print(f'__\ny{i+1} = {y_lined}')
         # print(f'y{i+1} = {y_new}\n')
-    return y[-1]
+    return x[-1], y[-1]
         
 
 def func(x, y):

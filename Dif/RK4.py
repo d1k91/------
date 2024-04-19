@@ -23,7 +23,7 @@ def f(x0, y0, n, h, func):
         # print(f"y_{i + 1}:", np.round(y_new, 5))
         # print()
         
-    return y[-1]
+    return x[-1], y[-1]
         
 def func(x, y):
     return np.round(np.array([y[1], x * y[1] + y[0]]), 5)
