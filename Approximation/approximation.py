@@ -4,7 +4,7 @@ import math
 
 x0 = 1
 i_start = 0
-i_end = 5
+i_end = 3
 h = 0.2
 n = i_end - i_start + 1
 alph = ['a', 'b', 'c', 'd', 'e']
@@ -34,13 +34,13 @@ def main():
     
 def graph(x, funcs, a):
     y = [0] * n
-    gg = [0] * n
-    xx = [0] * n 
+    gg = [0] * n * 100
+    xx = [0] * n * 100
     for i in range(n):
         y[i] = f(x[i])
     
-    for i in range(1, n + 1):
-        xx[i-1] = x0 + (i-1)*h
+    for i in range(1, (n * 100)+1):
+        xx[i-1] = x0 + (i-1)*h/100
         gg[i-1] = g(funcs, a, xx[i-1])
     
     plt.scatter(x,y, fc = 'none', ec='r')
