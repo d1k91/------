@@ -19,16 +19,19 @@ def opt(a, b, eps):
     it = 1
     x2 = round(a + coef * (b-a), 6)
     x1 = round(b - coef * (b-a), 6)
-    while (abs(f(x2) - f(x1)) > eps):
+    while (abs(x2 - x1) > eps):
         print(f'{it:>2}. a = {a:>8} x1 = {x1:>8} x2 = {x2:>8} b = {b:>8}')
-        if (f(x1) > f(x2)):
+        f_old = f(x2)
+        if (f(x1) > f_old):
             a = x1
             x1 = x2
             x2 = round(a + coef * (b-a), 6)
+            f_old = f(x2)
         else:
             b = x2
             x2 = x1
             x1 = round(b - coef * (b-a), 6)
+            f_old = f(x1)
         it += 1
     x = (a + b)/2
     print(f'\nx = {x}\nf(x)min = {f(x)}')    
