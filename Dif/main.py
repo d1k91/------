@@ -5,11 +5,11 @@ import RK4 as rk4
 import numpy as np
 
 
-x0 = 1  # начальное значение x
-y0 = np.array([2, -1])  # начальные значения y1 и y2
+x0 = 0 # начальное значение x
+y0 = np.array([1,1])  # начальные значения y1 и y2
 h = 0.2  # шаг интегрирования
 n = 1  # количество шагов
-mas = [ey.f, rk2pr.f, rk2v.f, rk4.f]
+mas = [rk4.f,rk4.f,rk4.f,rk4.f,rk4.f]
 
 def main():
     test(f, y0)
@@ -32,7 +32,7 @@ def test(f_orig, y0):
     print(f'Правильно решено {count} шагов')
 
 def f(x, y):
-    return np.array([y[1], x * y[1] + y[0]])
+    return np.array([y[1], (np.exp(x) + y[0] + y[1])/3])
 
 if __name__ == '__main__':
     main()

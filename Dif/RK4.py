@@ -12,8 +12,8 @@ def f(x0, y0, n, h, func):
 
         y_new = y[i - 1] + h/6 * (k1 + 2 * k2 + 2 * k3 + k4)
         
-        x.append(round(x[i - 1] + h, 5))
-        y.append(np.round(y_new, 5))
+        x.append(round(x[i - 1] + h, 10))
+        y.append(np.round(y_new, 10))
 
         # print(f"Step {i}:")
         # print(f"k1: {k1}")
