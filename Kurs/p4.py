@@ -10,10 +10,10 @@ def f(x0, y0, h, func, x_end):
         k3 = func(x[i] + h / 2, y[i] + h / 2 * k2)
         k4 = func(x[i] + h, y[i] + h * k3)
 
-        y_new = y[i - 1] + h/6 * (k1 + 2 * k2 + 2 * k3 + k4)
+        y_new = y[i] + h/6 * (k1 + 2 * k2 + 2 * k3 + k4)
         
-        x.append(np.round(x[i] + h, 8))
-        y.append(np.round(y_new, 8))
+        x.append(np.round(x[i] + h, 10))
+        y.append(np.round(y_new, 10))
         i += 1
 
         # print(f"Step {i}:")
