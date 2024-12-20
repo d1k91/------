@@ -13,12 +13,12 @@ def f(x0, y0, n, h, func):
     return x[-1], y[-1]
       
 def func(x, y):
-    return np.array([y[1], x * y[1] + y[0]])
+    return np.array([y[1], y[1]* x + y[0]])
     
 
-# x0 = 1  # начальное значение x
-# y0 = np.array([2, -1])  # начальные значения y1 и y2
-# h = 0.2
-# n = 3
+x0 = 1  # начальное значение x
+y0 = np.array([2, -1])  # начальные значения y1 и y2
+h = 0.2
+n = 3
 
-# print(f(x0, y0, n, h, func))
+print(f(x0, y0, n, h, func))

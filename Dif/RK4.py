@@ -15,24 +15,24 @@ def f(x0, y0, n, h, func):
         x.append(round(x[i - 1] + h, 10))
         y.append(np.round(y_new, 10))
 
-        # print(f"Step {i}:")
-        # print(f"k1: {k1}")
-        # print(f"k2: {k2}")
-        # print(f"k3: {k3}")
-        # print(f"k4: {k4}")
-        # print(f"y_{i + 1}:", np.round(y_new, 5))
-        # print()
+        print(f"Step {i}:")
+        print(f"k1: {k1}")
+        print(f"k2: {k2}")
+        print(f"k3: {k3}")
+        print(f"k4: {k4}")
+        print(f"y_{i + 1}:", np.round(y_new, 5))
+        print()
         
     return x[-1], y[-1]
         
 def func(x, y):
-    return np.round(np.array([y[1], x * y[1] + y[0]]), 5)
+    return np.array([y[1], y[1]* x + y[0]])
 
-# x0 = 1  # начальное значение x
-# y0 = np.array([2, -1])  # начальные значения y1 и y2
-# h = 0.2
-# n = 5
+x0 = 1  # начальное значение x
+y0 = np.array([2, -1])  # начальные значения y1 и y2
+h = 0.2
+n = 3
 
-# y = f(x0, y0, n, h, func)
-# for i in range(len(y)):
-#     print(i, y[i])
+y = f(x0, y0, n, h, func)
+for i in range(len(y)):
+    print(i, y[i])
